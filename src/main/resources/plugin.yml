@@ -1,0 +1,6 @@
+name: PoisonModifier
+version: ${project.version}
+main: me.thevipershow.poisonmodifier.PoisonModifier
+api-version: 1.16
+authors: [TheViperShow]
+description: Modify poison values.
