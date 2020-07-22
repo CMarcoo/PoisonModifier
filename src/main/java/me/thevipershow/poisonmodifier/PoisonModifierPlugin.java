@@ -1,8 +1,10 @@
 package me.thevipershow.poisonmodifier;
 
+import me.thevipershow.poisonmodifier.commands.PoisonModifierCommand;
 import me.thevipershow.poisonmodifier.config.PoisonModifierObject;
 import me.thevipershow.poisonmodifier.config.Values;
 import me.thevipershow.poisonmodifier.listener.DamageListener;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.Plugin;
 
@@ -17,9 +19,10 @@ public enum PoisonModifierPlugin {
         ConfigurationSerialization.registerClass(PoisonModifierObject.class);
         this.plugin = Objects.requireNonNull(plugin, "Plugin cannot be null!");
         plugin.saveDefaultConfig();
-        final Values values = new Values();
-        values.updateValues(plugin);
+        final Values values = Values.getInstance(plugin);
+        values.updateValues();
         plugin.getServer().getPluginManager().registerEvents(new DamageListener(values), plugin);
+        Bukkit.getPluginCommand("poison-modifier").setExecutor(new PoisonModifierCommand(values, plugin));
     }
 
     public final void stop() {

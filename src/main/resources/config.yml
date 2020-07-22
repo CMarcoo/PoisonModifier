@@ -4,3 +4,4 @@ poison:
       damage: 1.5
     - level: 2
       damage: 2.5
+    # You can add other values

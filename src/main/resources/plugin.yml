@@ -1,6 +1,13 @@
 name: PoisonModifier
 version: ${project.version}
 main: me.thevipershow.poisonmodifier.PoisonModifier
-api-version: 1.16
+api-version: 1.13
 authors: [TheViperShow]
 description: Modify poison values.
+commands:
+  poison-modifier:
+    description: Main command of the PoisonModifier plugin.
+    permission: poison-modifier.admin
+    permission-message: "§8[§aPoisonModifier§8]§7: §cYou do not have permissions!"
+    usage: "§8[§aPoisonModifier§8]§7: §cIncorrect syntax."
+

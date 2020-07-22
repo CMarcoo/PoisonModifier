@@ -1,7 +1,8 @@
 package me.thevipershow.poisonmodifier.listener;
 
 import me.thevipershow.poisonmodifier.config.Values;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,15 +22,16 @@ public final class DamageListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         final EntityDamageEvent.DamageCause cause = event.getCause();
         if (cause != EntityDamageEvent.DamageCause.POISON) return;
-        if (!(event.getEntity() instanceof Player)) return;
-        final Player player = (Player) event.getEntity();
-        final PotionEffect effect = player.getPotionEffect(PotionEffectType.POISON);
+        final Entity entity = event.getEntity();
+        if (!(entity instanceof LivingEntity)) return;
+        final LivingEntity lEntity = (LivingEntity) entity;
+        final PotionEffect effect = lEntity.getPotionEffect(PotionEffectType.POISON);
         if (effect == null) return;
         final int level = effect.getAmplifier();
         final Double modifier = values.getLevelDamage(level);
         if (modifier == null) return;
-        if (player.getHealth() - modifier <= 1.d) return;
-        // System.out.println(String.format("I'm damaging %s with %.3f", player.getName(), modifier));
+        if (lEntity.getHealth() - modifier <= 1.d) return;
+        // System.out.println(String.format("I'm damaging %s with %.3f", lEntity.getUID(), modifier));
         event.setDamage(modifier);
     }
 }
