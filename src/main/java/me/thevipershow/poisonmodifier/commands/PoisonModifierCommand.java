@@ -44,7 +44,7 @@ public final class PoisonModifierCommand implements CommandExecutor {
                 final long then = time();
                 values.updateValues();
                 final long taken = time() - then;
-                sender.sendMessage(String.format("&8[&aPoisonModifier&8]&7: Operation finished in &a%d &7(ms).", taken));
+                sender.sendMessage(color(String.format("&8[&aPoisonModifier&8]&7: Operation finished in &a%d &7(ms).", taken)));
                 returnValue = true;
             }
         }

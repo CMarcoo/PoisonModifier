@@ -5,11 +5,14 @@ import me.thevipershow.poisonmodifier.config.Values;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -70,12 +73,7 @@ public final class DamageListener implements Listener {
 
                 final int noDamageTicks = livingEntity.getNoDamageTicks();
                 livingEntity.setNoDamageTicks(0);
-                // System.out.println(String.format("Damaging entity: %f", damageToApply));
-                if (livingEntity.getHealth() - damageToApply <= 0.50d) {
-                    livingEntity.setHealth(0.00d);
-                    stop();
-                    return;
-                }
+
                 livingEntity.damage(damageToApply);
                 livingEntity.setNoDamageTicks(noDamageTicks);
             }, 1L, object.getSpeed());
@@ -94,6 +92,22 @@ public final class DamageListener implements Listener {
             isRunning = false;
             playerPoison.remove(entityUUID);
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+    public void onPlayerQuit(final PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+        final EntityCustomPoison customPoison = playerPoison.get(player.getUniqueId());
+        if (customPoison == null) return;
+        customPoison.stop();
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+    public void onEntityDeath(EntityDeathEvent event) {
+        final LivingEntity entity = event.getEntity();
+        final EntityCustomPoison customPoison = playerPoison.get(entity.getUniqueId());
+        if (customPoison == null) return;
+        customPoison.stop();
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
