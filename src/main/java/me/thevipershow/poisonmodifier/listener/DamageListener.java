@@ -71,12 +71,13 @@ public final class DamageListener implements Listener {
                 final int noDamageTicks = livingEntity.getNoDamageTicks();
                 livingEntity.setNoDamageTicks(0);
                 // System.out.println(String.format("Damaging entity: %f", damageToApply));
+                if (livingEntity.getHealth() - damageToApply <= 0.50d) {
+                    livingEntity.setHealth(0.00d);
+                    stop();
+                    return;
+                }
                 livingEntity.damage(damageToApply);
                 livingEntity.setNoDamageTicks(noDamageTicks);
-
-                if (livingEntity.getHealth() - damageToApply < 0.d) {
-                    stop();
-                }
             }, 1L, object.getSpeed());
         }
 
