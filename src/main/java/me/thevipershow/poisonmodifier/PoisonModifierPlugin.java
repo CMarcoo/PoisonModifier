@@ -21,7 +21,7 @@ public enum PoisonModifierPlugin {
         plugin.saveDefaultConfig();
         final Values values = Values.getInstance(plugin);
         values.updateValues();
-        plugin.getServer().getPluginManager().registerEvents(new DamageListener(values), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new DamageListener(values, plugin), plugin);
         Bukkit.getPluginCommand("poison-modifier").setExecutor(new PoisonModifierCommand(values, plugin));
     }
 

@@ -1,7 +1,9 @@
 poison:
   modifiers:
-    - level: 1
-      damage: 1.5
+    - level: 1 # the level of the poison
+      damage: 1.5  # the damage (20 max)
+      speed: 3 # how often poison applies (in ticks, 20 tick = 1second).
     - level: 2
       damage: 2.5
+      speed: 15
     # You can add other values

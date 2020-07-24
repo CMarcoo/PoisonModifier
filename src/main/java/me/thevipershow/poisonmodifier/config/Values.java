@@ -1,10 +1,10 @@
 package me.thevipershow.poisonmodifier.config;
 
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 
 public final class Values {
     private static Values instance = null;
@@ -20,18 +20,34 @@ public final class Values {
         return instance;
     }
 
-    private final HashMap<Integer, Double> modifiers = new HashMap<>();
+    private final HashSet<PoisonModifierObject> modifiers = new HashSet<>();
 
     public void updateValues() {
         plugin.reloadConfig();
         modifiers.clear();
         for (final Map<?, ?> map : plugin.getConfig().getConfigurationSection("poison").getMapList("modifiers")) {
             final PoisonModifierObject p = PoisonModifierObject.deserialize((Map<String, Object>) map);
-            modifiers.put(p.getLevel(), p.getDamage());
+            modifiers.add(p);
         }
     }
 
-    public final Double getLevelDamage(final int level) {
-        return modifiers.get(level);
+    public final Optional<PoisonModifierObject> getPoisonModifierObject(final int level) {
+        for (final PoisonModifierObject modifier : modifiers)
+            if (modifier.getLevel() == level) return Optional.of(modifier);
+        return Optional.empty();
+    }
+
+    public final Optional<Double> getLevelDamage(final int level) {
+        for (final PoisonModifierObject modifier : modifiers)
+            if (modifier.getLevel() == level)
+                return Optional.of(modifier.getDamage());
+        return Optional.empty();
+    }
+
+    public final Optional<Integer> getLevelSpeed(final int level) {
+        for (final PoisonModifierObject modifier : modifiers)
+            if (modifier.getLevel() == level)
+                return Optional.of(modifier.getSpeed());
+        return Optional.empty();
     }
 }

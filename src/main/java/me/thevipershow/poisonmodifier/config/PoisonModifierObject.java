@@ -10,6 +10,7 @@ import java.util.Map;
 public final class PoisonModifierObject implements ConfigurationSerializable {
     private final int level;
     private final double damage;
+    private final int speed;
 
     public final int getLevel() {
         return level;
@@ -19,9 +20,14 @@ public final class PoisonModifierObject implements ConfigurationSerializable {
         return damage;
     }
 
-    public PoisonModifierObject(final int level, final double damage) {
+    public final int getSpeed() {
+        return speed;
+    }
+
+    public PoisonModifierObject(final int level, final double damage, final int speed) {
         this.level = level;
         this.damage = damage;
+        this.speed = speed;
     }
 
     @Override
@@ -29,12 +35,14 @@ public final class PoisonModifierObject implements ConfigurationSerializable {
         final Map<String, Object> map = new HashMap<>();
         map.put("level", level);
         map.put("damage", damage);
+        map.put("speed", speed);
         return map;
     }
 
     public static PoisonModifierObject deserialize(final Map<String, Object> map) {
         final int level = (int) map.get("level");
         final double damage = (double) map.get("damage");
-        return new PoisonModifierObject(level, damage);
+        final int speed = (int) map.get("speed");
+        return new PoisonModifierObject(level, damage, speed);
     }
 }

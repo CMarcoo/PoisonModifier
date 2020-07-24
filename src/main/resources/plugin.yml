@@ -1,7 +1,7 @@
 name: PoisonModifier
 version: ${project.version}
 main: me.thevipershow.poisonmodifier.PoisonModifier
-api-version: 1.13
+api-version: '1.15'
 authors: [TheViperShow]
 description: Modify poison values.
 commands:
