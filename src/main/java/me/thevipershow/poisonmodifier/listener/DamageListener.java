@@ -55,9 +55,16 @@ public final class DamageListener implements Listener {
             poisonModifierObject = object;
             // System.out.println("Starting runnable.");
             task = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-                isRunning = true;
                 final Entity entity = Bukkit.getEntity(entityUUID);
-                if (!(entity instanceof LivingEntity)) return;
+                if (entity == null) {
+                    stop();
+                    return;
+                }
+                if (!(entity instanceof LivingEntity)) {
+                    stop();
+                    return;
+                }
+                isRunning = true;
                 final double damageToApply = object.getDamage();
                 final LivingEntity livingEntity = (LivingEntity) entity;
 
@@ -67,8 +74,8 @@ public final class DamageListener implements Listener {
                 livingEntity.damage(damageToApply);
                 livingEntity.setNoDamageTicks(noDamageTicks);
 
-                if (livingEntity.getHealth() - damageToApply <= 0.d) {
-                    // stop();
+                if (livingEntity.getHealth() - damageToApply < 0.d) {
+                    stop();
                 }
             }, 1L, object.getSpeed());
         }
